@@ -1,3 +1,11 @@
+#This module returns raw text scraped from a recipe website (allrecipes.com)
+#Returns:
+#   recipe steps
+#   ingredients list
+#   prep time, prep time unit ('min' or 'h')
+#   cook time, cook time unit ('min' or 'h')
+#   ready time (total time to prepare and cook recipe)
+
 import requests
 import traceback
 from lxml import html
@@ -72,15 +80,20 @@ def food_scraping(link):
     readyInTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[4]/time/span/text()')
     print(readyInTimeUnit)
 
-def food_search(food):
+'''Return a recipe link and name found for the given food
+'''
+def food_search(food : str):
+    #search allrecipes for 'food'
     link = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'%food
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
+    
+    #link to recipe page
+    link = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3//a/@href')
+    #name of recipe
+    recipe_name = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3/a/span/text()')
+    return (link, recipe_name)
 
-    option[0]= tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3//a/@href')
-
-    option[1] = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3/a/span/text()')
-    return option
-
-options = food_search('cake')
-food_scraping(options[1][2])
+#Example calls to get recipe data
+recipe_info = food_search('cake')
+data = food_scraping(recipe_info[0])
