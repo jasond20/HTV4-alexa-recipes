@@ -28,10 +28,14 @@ class Recipe:
 #         return whole_recipe.join(self.__steps)
 
     def read_step(self):  # give index and increment current step from handler,
-        step_sentence = self.__steps[self.__current_step]
-        self.__current_step += 1
-        return step_sentence
+       return self.__steps[self.__current_step]
 
+    def increment_step(self):
+        self.__current_step += 1
+        
+    def decrement_step(self):
+        self.__current_step -= 1
+        
 #     def move_to_given_step(self, index):  # give index and increment current step  from handler
 #         step_string = self.__steps[index - 1]
 #         self.set_current_step(index - 1)
