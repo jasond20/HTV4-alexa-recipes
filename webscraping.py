@@ -77,18 +77,9 @@ def food_search(food):
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
 
-    option[1][0] = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3//a/@href')
-    option[1][1] = tree.xpath('//*[@id="fixedGridSection"]/article[5]/div[2]/h3//a/@href')
-    option[1][2] = tree.xpath('//*[@id="fixedGridSection"]/article[6]/div[2]/h3//a/@href')
+    option[0]= tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3//a/@href')
 
-    option[2][0] = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3/a/span/text()')
-    option[2][1] = tree.xpath('//*[@id="fixedGridSection"]/article[5]/div[2]/h3/a/span/text()')
-    option[2][2] = tree.xpath('//*[@id="fixedGridSection"]/article[6]/div[2]/h3/a/span/text()')
-
-    print(option[1][0])
-    print(option[1][1])
-    print(option[1][2])
-
+    option[1] = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3/a/span/text()')
     return option
 
 options = food_search('cake')
