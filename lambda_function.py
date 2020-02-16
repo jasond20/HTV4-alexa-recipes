@@ -14,8 +14,6 @@ from ask_sdk_model import Response
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-count = 0
-
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
     def can_handle(self, handler_input):
@@ -49,7 +47,8 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
         #recipe_name = ??? webscraper find recipe name
         #ingredients_list = ??? webscraper get ingredients list
         #steps_list = ??? webscraper get steps list <- add all of these to recipe_attributes
-        
+        #ingredient_count = 0
+        #step_count = 0
         attributes_manager = handler_input.attributes_manager
         
         
@@ -60,7 +59,7 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
         attributes_manager.save_persistent_attributes()
         
         
-        speak_output = 'Here's a recipe for {recipe_name}.'.format(food=food)
+        speak_output = 'Here's a recipe for {recipe_name}.'.format(recipe_name=recipe_name)
         #^Here's a recipe for _
         
         return (
@@ -82,7 +81,22 @@ class NextIngredientIntentHandler(AbstractRequestHandler):
         speak_output = ""
         #^Replace with the stuff from processing/list of ingredients
         
-        s
+        attr = handler_input.attributes_manager.persistent_attributes
+        ingredient_count = attr['ingredient_count']
+        
+        if ingredient_count >= len(attr['ingredients_list']):
+            return (
+                handler_input.response_builder
+                .speak("Done with ingredients. Try asking about the next step.")
+                .ask()
+                .response
+            )
+        
+        attr["ingredient_count"] += 1
+        speak_output = attr['ingredients_list'][ingredient_count]
+        attributes_manager = handler_input.attributes_manager
+        attributes_manager.persistent_attributes = attr
+        attributes_manager.save_persistent_attributes()
         
         return (
             handler_input.response_builder
@@ -103,6 +117,22 @@ class NextStepIntentHandler(AbstractRequestHandler):
         speak_output = ""
         #^Replace with the stuff from processing/list of steps
         
+        attr = handler_input.attributes_manager.persistent_attributes
+        step_count = attr['step_count']
+        
+        if step_count >= len(attr['steps']):
+            return (
+                handler_input.response_builder
+                .speak("Finished all steps. You recipe is complete.")
+                .ask()
+                .response
+            )
+        attr["step_count"] += 1
+        speak_output = attr['steps'][step_count]
+        attributes_manager = handler_input.attributes_manager
+        attributes_manager.persistent_attributes = attr
+        attributes_manager.save_persistent_attributes()
+        
         return (
             handler_input.response_builder
                 .speak(speak_output)
@@ -121,6 +151,22 @@ class PreviousStepIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing/list of steps
+        
+        attr = handler_input.attributes_manager.persistent_attributes
+        step_count = attr['step_count']
+        
+        if step_count <= 0:
+            return (
+                handler_input.response_builder
+                .speak("There is no previous step.")
+                .ask()
+                .response
+            )
+        attr["step_count"] -= 1
+        speak_output = attr['steps'][step_count]
+        attributes_manager = handler_input.attributes_manager
+        attributes_manager.persistent_attributes = attr
+        attributes_manager.save_persistent_attributes()
         
         return (
             handler_input.response_builder
@@ -141,6 +187,10 @@ class ConfirmationIntentHandler(AbstractRequestHandler):
         speak_output = ""
         #^Replace with the stuff from processing/list of steps (Repeat current step)
         
+        attr = handler_input.attributes_manager.persistent_attributes
+        step_count = attr['step_count']
+        speak_output = attr['steps'][step_count]
+            
         return (
             handler_input.response_builder
                 .speak(speak_output)
@@ -159,6 +209,10 @@ class ConfirmIngredientIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing function/list of ingredients
+        
+        attr = handler_input.attributes_manager.persistent_attributes
+        ingredient_count = attr['ingredient_count']
+        speak_output = attr['ingredients_list'][ingredient_count]
         
         return (
             handler_input.response_builder
@@ -194,7 +248,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Goodbye!"
+        speak_output = ""
 
         return (
             handler_input.response_builder
