@@ -2,6 +2,7 @@ import requests
 import traceback
 from lxml import html
 
+#returns ingredients and steps in a list
 def food_scraping(link):
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
@@ -72,7 +73,7 @@ def food_scraping(link):
     #print(readyInTimeUnit)
 
     return steps, ingredients
-
+#returns link and title of searched food
 def food_search(food):
 
     link = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'%food
