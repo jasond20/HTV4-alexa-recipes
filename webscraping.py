@@ -24,9 +24,9 @@ def food_scraping(link):
             if len(step) == 0:
                 break
             steps.append(step)
-            print(step)
+            #print(step)
         except:
-            traceback.print_exc()
+            #traceback.print_exc()
             break
     i = 1
     #ingredients list
@@ -46,30 +46,30 @@ def food_scraping(link):
                 if(xPathCounter>1):
                     break
             ingredients.append(ingredient)
-            print(ingredient)
+            #print(ingredient)
 
         except:
-            traceback.print_exc()
+            #traceback.print_exc()
             break
 
     prepTime = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[2]/time/span/span/text()')
     prepTime = str(prepTime)[2:len(str(prepTime))-2]
-    print(prepTime)
+    #print(prepTime)
 
     prepTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[2]/time/span/text()')
-    print(prepTimeUnit)
+    #print(prepTimeUnit)
 
     cookTime = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[3]/time/span/span/text()')
-    print(cookTime)
+    #print(cookTime)
 
     cookTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[3]/time/span/text()')
-    print(cookTimeUnit)
+    #print(cookTimeUnit)
 
     readyIn = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[4]/time/span/span/text()')
-    print(readyIn)
+    #print(readyIn)
 
     readyInTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[4]/time/span/text()')
-    print(readyInTimeUnit)
+    #print(readyInTimeUnit)
 
     return steps, ingredients
 
@@ -83,12 +83,12 @@ def food_search(food):
     optionlink = str(optionlink)[2:len(str(optionlink))-2]
     optionname = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3/a/span/text()')
 
-    print(optionlink)
+    #print(optionlink)
     return optionlink, optionname
 
 try:
     link, name = food_search('poptarts')
     steps, ingredients = food_scraping(link)
 except:
-    print("no results")
+    #print("no results")
 
