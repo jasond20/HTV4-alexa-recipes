@@ -85,7 +85,7 @@ def food_search(food):
 
     print(optionlink)
 
-    return optionlink
+    return optionlink, optionname
 
-link = food_search('brownies')
+link, name = food_search('brownies')
 steps, ingredients = food_scraping(link)
