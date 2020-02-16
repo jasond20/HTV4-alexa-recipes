@@ -50,8 +50,8 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
         
     
         try:
-            link, recipe_name = webscrape.food_search(food)
-            steps, ingredients_list = webscrape.food_scraping(link)
+            link, recipe_name = webscraping.food_search(food)
+            steps, ingredients_list = webscraping.food_scraping(link)
             step_count = 0
         except:
             #print("no results")
