@@ -2,11 +2,9 @@ import requests
 import traceback
 from lxml import html
 
-#returns ingredients and steps in a list
 def food_scraping(link):
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
-
     i = 1
     ingredients = []
     ingredientsXpath = ['//*[@id="lst_ingredients_1"]/li[%i]/label/span/text()',
@@ -14,8 +12,7 @@ def food_scraping(link):
     xPathCounter = 0
     ingredientsListNum = 1
     steps = []
-
-    #read steps
+        #read steps
     while(True):
         try:
             xPath = '//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ol/li[%x]/span/text()'%i
@@ -34,7 +31,6 @@ def food_scraping(link):
     while(True):
         try:
             xPath = ingredientsXpath[xPathCounter]%i
-
             i += 1
             #print(xPath)
             ingredient = tree.xpath(xPath)
@@ -48,34 +44,25 @@ def food_scraping(link):
                     break
             ingredients.append(ingredient)
             #print(ingredient)
-
         except:
             #traceback.print_exc()
             break
-
     prepTime = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[2]/time/span/span/text()')
     prepTime = str(prepTime)[2:len(str(prepTime))-2]
     #print(prepTime)
-
     prepTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[2]/time/span/text()')
     #print(prepTimeUnit)
-
     cookTime = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[3]/time/span/span/text()')
     #print(cookTime)
-
     cookTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[3]/time/span/text()')
     #print(cookTimeUnit)
-
     readyIn = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[4]/time/span/span/text()')
     #print(readyIn)
-
     readyInTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[4]/time/span/text()')
     #print(readyInTimeUnit)
-
     return steps, ingredients
 #returns link and title of searched food
 def food_search(food):
-
     link = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'%food
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
@@ -86,10 +73,3 @@ def food_search(food):
 
     #print(optionlink)
     return optionlink, optionname
-
-try:
-    link, name = food_search('poptarts')
-    steps, ingredients = food_scraping(link)
-except:
-    #print("no results")
-
