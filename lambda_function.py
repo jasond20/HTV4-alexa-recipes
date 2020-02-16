@@ -81,7 +81,7 @@ class NextIngredientIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing/list of ingredients
-        
+        speak_output = ingredients[currentStep += 1] 
         s
         
         return (
@@ -102,6 +102,7 @@ class NextStepIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing/list of steps
+        speak_output = steps[currentStep += 1] 
         
         return (
             handler_input.response_builder
@@ -121,6 +122,7 @@ class PreviousStepIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing/list of steps
+        speak_output = steps[currentStep -= 1]
         
         return (
             handler_input.response_builder
@@ -159,7 +161,15 @@ class ConfirmIngredientIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing function/list of ingredients
-        
+#         repeat_ingredient_sentences = []
+#         sentences = self.__steps[self.__current_step].split('.')
+#         for sentence in sentences:
+#             for ingredient in self.__ingredients:
+#                 if ingredient in sentence:
+#                     repeat_ingredient_sentences.append(sentence)
+#                     break
+#         all_ingredient_sentences = ""
+#         speak_output = all_ingredient_sentences.join(repeat_ingredient_sentences)
         return (
             handler_input.response_builder
                 .speak(speak_output)
