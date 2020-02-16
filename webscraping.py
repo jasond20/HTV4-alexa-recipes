@@ -79,7 +79,9 @@ def food_scraping(link):
 
     readyInTimeUnit = tree.xpath('//*[@id="main-content"]/div[3]/section/section[2]/div/div[1]/ul/li[4]/time/span/text()')
     print(readyInTimeUnit)
-
+    
+    return steps, ingredients, prepTime, prepTimeUnit, cookTime, cookTimeUnit, readyIn, readyInUnit
+    
 '''Return a recipe link and name found for the given food
 '''
 def food_search(food : str):
