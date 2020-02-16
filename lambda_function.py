@@ -43,9 +43,15 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         slots = handler_input.request_envelope.request.intent.slots
         food = slots["Recipe"].value
-        count += 1
+        
+        
+        #link = food_search(food) webscraper find food link
+        #recipe_name = ??? webscraper find recipe name
+        #ingredients_list = ??? webscraper get ingredients list
+        #steps_list = ??? webscraper get steps list <- add all of these to recipe_attributes
         
         attributes_manager = handler_input.attributes_manager
+        
         
         recipe_attributes = {
             "food": food
@@ -53,8 +59,7 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
         attributes_manager.persistent_attributes = recipe_attributes
         attributes_manager.save_persistent_attributes()
         
-        #link = food_search(food) webscraper find food link
-        #recipe_name = ??? webscraper find recipe name
+        
         speak_output = 'Here's a recipe for {recipe_name}.'.format(food=food)
         #^Here's a recipe for _
         
@@ -68,11 +73,16 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
 class NextIngredientIntentHandler(AbstractRequestHandler):
     """Handler for stepping ingredients"""
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("NextIngredientIntent")(handler_input)
+        attr = handler_input.attributes_manager.persistent_attributes
+        attributes_are_present = ("food" in attr)
+        
+        return ask_utils.is_intent_name("NextIngredientIntent")(handler_input) and attributes_are_present
          
     def handle(self, handler_input):
         speak_output = ""
         #^Replace with the stuff from processing/list of ingredients
+        
+        s
         
         return (
             handler_input.response_builder
@@ -84,7 +94,10 @@ class NextIngredientIntentHandler(AbstractRequestHandler):
 class NextStepIntentHandler(AbstractRequestHandler):
     """Handler for stepping steps"""
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("NextStepIntent")(handler_input)
+        attr = handler_input.attributes_manager.persistent_attributes
+        attributes_are_present = ("food" in attr)
+        
+        return ask_utils.is_intent_name("NextStepIntent")(handler_input) and attributes_are_present
          
     def handle(self, handler_input):
         speak_output = ""
@@ -100,7 +113,10 @@ class NextStepIntentHandler(AbstractRequestHandler):
 class PreviousStepIntentHandler(AbstractRequestHandler):
     """Handler for stepping steps"""
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("PreviousStepIntent")(handler_input)
+        attr = handler_input.attributes_manager.persistent_attributes
+        attributes_are_present = ("food" in attr)
+        
+        return ask_utils.is_intent_name("PreviousStepIntent")(handler_input) and attributes_are_present
          
     def handle(self, handler_input):
         speak_output = ""
@@ -116,7 +132,10 @@ class PreviousStepIntentHandler(AbstractRequestHandler):
 class ConfirmationIntentHandler(AbstractRequestHandler):
     """Handler for step confirmation"""
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("ConfirmationIntent")(handler_input)
+        attr = handler_input.attributes_manager.persistent_attributes
+        attributes_are_present = ("food" in attr)
+        
+        return ask_utils.is_intent_name("ConfirmationIntent")(handler_input) and attributes_are_present
          
     def handle(self, handler_input):
         speak_output = ""
@@ -132,7 +151,10 @@ class ConfirmationIntentHandler(AbstractRequestHandler):
 class ConfirmIngredientIntentHandler(AbstractRequestHandler):
     """Handler for ingredient confirmation"""
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("ConfirmIngredientIntent")(handler_input)
+        attr = handler_input.attributes_manager.persistent_attributes
+        attributes_are_present = ("food" in attr)
+        
+        return ask_utils.is_intent_name("ConfirmIngredientIntent")(handler_input) and attributes_are_present
          
     def handle(self, handler_input):
         speak_output = ""
