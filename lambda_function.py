@@ -161,7 +161,7 @@ class InitializeRecipeIntentHandler(AbstractRequestHandler):
         attributes_manager.save_persistent_attributes()
         
         
-        speak_output = 'Here's a recipe for {recipe_name}.'.format(recipe_name=recipe_name)
+        speak_output = "Here's a recipe for {recipe_name}.".format(recipe_name=recipe_name)
         #^Here's a recipe for _
         
         return (
