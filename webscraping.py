@@ -3,7 +3,6 @@ import traceback
 from lxml import html
 
 def food_scraping(link):
-    #link = 'https://www.allrecipes.com/recipe/273524/blueberry-goat-cheese-and-basil-pie/?internalSource=similar_recipe_banner&referringId=270677&referringContentType=Recipe&clickId=simslot_2'
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
 
@@ -75,6 +74,7 @@ def food_scraping(link):
     return steps, ingredients
 
 def food_search(food):
+
     link = 'https://www.allrecipes.com/search/results/?wt=%s&sort=re'%food
     pageContent=requests.get(link)
     tree = html.fromstring(pageContent.content)
@@ -84,8 +84,11 @@ def food_search(food):
     optionname = tree.xpath('//*[@id="fixedGridSection"]/article[2]/div[2]/h3/a/span/text()')
 
     print(optionlink)
-
     return optionlink, optionname
 
-link, name = food_search('brownies')
-steps, ingredients = food_scraping(link)
+try:
+    link, name = food_search('poptarts')
+    steps, ingredients = food_scraping(link)
+except:
+    print("no results")
+
